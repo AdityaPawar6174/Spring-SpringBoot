@@ -11,6 +11,7 @@ public class App
         System.out.println( "Hello World!" );
         // Tomact is a servlet comtainer
         Tomcat tomcat = new Tomcat();
+        tomcat.setPort(8080);
 
         // Hardcoding or internal tomcat config...way to map call to servlet
         Context context = tomcat.addContext("", null);
@@ -21,5 +22,7 @@ public class App
         // staring the tomcat server
         tomcat.start();
         tomcat.getServer().await();
+
+        // output ---> https://localhost:8080/hello
     }
 }
