@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- bean definitions here -->
+
+<!--    <bean id="alien" class="org.aditya.Alien" scope="prototype"> </bean>-->
+
+    <bean id="alien" class="org.aditya.Alien" autowire="byType">
+        <!--Constructor injection-->
+        <property name="age" value="21"/><!-- age variable assigned int value -->
+        <property name="comp">
+            <bean id="comp1" class="org.aditya.Laptop" primary="true"> <!-- inner Bean -->
+            </bean>
+        </property>
+<!--        <constructor-arg index="0" value="21"/> &lt;!&ndash; use type, name or index (ideally use index) to the correct argument type and sequence &ndash;&gt;-->
+<!--        <constructor-arg index="1" ref="laptop"/>-->
+
+<!--        <constructor-arg name="age" value="21"/>-->
+<!--        <constructor-arg name="lap" ref="laptop"/>-->
+
+<!--        <constructor-arg type="int" value="21"/>-->
+<!--        <constructor-arg type="org.aditya.Laptop" ref="laptop"/>-->
+<!--        -->
+<!--        Setter injection-->
+<!--        <property name="comp" ref="comp1"/> &lt;!&ndash; lap variable assigned object reference laptop id (declared below for Laptop bean) &ndash;&gt;-->
+    </bean>
+
+<!--    <bean id="laptop1" class="org.aditya.Laptop">-->
+<!--    </bean>-->
+
+<!--    <bean id="comp1" class="org.aditya.Laptop" primary="true">-->
+<!--    </bean>-->
+
+<!--    <bean id="comp2" class="org.aditya.Desktop" lazy-init="true"> &lt;!&ndash;lazy-init makes the object creation only when we want to use it&ndash;&gt;-->
+<!--    </bean>-->
+    <bean class="org.aditya.Desktop" lazy-init="true"> <!--lazy-init makes the object creation only when we want to use it-->
+    </bean>
+
+<!--    <bean class="org.aditya.Laptop"> &lt;!&ndash; id was optional -->
+<!--    </bean>-->
+
+</beans>
