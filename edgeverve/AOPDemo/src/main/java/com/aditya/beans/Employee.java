@@ -1,35 +1,27 @@
 package com.aditya.beans;
 
 import com.aditya.services.EmployeeService;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.security.PrivateKey;
 
 @Component
+@Data // getter, setter, toString(), equals(), contructor
 public class Employee {
 
+    @Setter // by using lambok plugin
+    @Getter
     private String employeeName = "Aditya";
+    @Setter
+    @Getter
     private int employeeId = 45;
 
     @Autowired
     private EmployeeService employeeService;
-
-    public String getEmployeeName() {
-        return employeeName;
-    }
-
-    public void setEmployeeName(String employeeName) {
-        this.employeeName = employeeName;
-    }
-
-    public int getEmployeeId() {
-        return employeeId;
-    }
-
-    public void setEmployeeId(int employeeId) {
-        this.employeeId = employeeId;
-    }
 
     public void showDetails(){
         System.out.println("Employee Name: "+employeeName);
