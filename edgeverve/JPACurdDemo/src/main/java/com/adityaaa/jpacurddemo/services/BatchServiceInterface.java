@@ -13,5 +13,11 @@ public interface BatchServiceInterface {
 
     public Optional<Batches> findBatchById(int batchId);
 
-//     public List<Batches> showAllBatches();
+    public void updateBatchesOnbasisOfId(int batchId);
+
+    public List<Batches> showAllBatches();
+
+    public void removeBatchById(int batchId);
+
+    public List<Batches> findOnBasisOfBatchName(String batchName);
 }

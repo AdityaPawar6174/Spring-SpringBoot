@@ -3,6 +3,7 @@ package com.adityaaa.jpacurddemo;
 import com.adityaaa.jpacurddemo.beans.Batches;
 import com.adityaaa.jpacurddemo.services.BatchServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,8 @@ public class JpacurddemoApplication implements CommandLineRunner {
 
 	@Autowired
 	BatchServices batchService;
+	@Value("${spring.application.name}")
+	private String appName;
 
 	public static void main(String[] args) {
 		SpringApplication.run(JpacurddemoApplication.class, args);
@@ -25,11 +28,14 @@ public class JpacurddemoApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		Scanner scanner = new Scanner(System.in);
+		System.out.println(appName);
 		System.out.println("Enter 1 to add new Batch");
 		System.out.println("Enter 2 to add multiple batches");
-		System.out.println("Enter 3 to see all he batches");
+		System.out.println("Enter 3 to find the batch on basis of id");
 		System.out.println("Enter 4 to update batch details");
-		System.out.println("Enter 5 to remove the batch");
+		System.out.println("Enter 5 to fetch all the records from the database");
+		System.out.println("Enter 6 to remove the batch");
+		System.out.println("Enter 7 to find all batches by Name");
 
 		int operation = scanner.nextInt();
 		switch (operation)
@@ -81,6 +87,32 @@ public class JpacurddemoApplication implements CommandLineRunner {
 					System.err.println("Id not found");
 				}
 			break;
+
+			case  4:
+				System.out.println("Enter Batch Id");
+				int batchID = scanner.nextInt();
+				batchService.updateBatchesOnbasisOfId(batchID);
+				break;
+
+			case 5:
+				System.out.println("All the records are given below...");
+				List<Batches> batchesList1 = batchService.showAllBatches();
+				batchesList1.forEach(batch -> System.out.println(batch));
+				break;
+
+			case 6:
+				System.out.println("Enter Batch Id");
+				batchID = scanner.nextInt();
+				batchService.removeBatchById(batchID);
+				System.out.println("Batch deleted"+batchID);
+				break;
+
+			case 7:
+				System.out.println("Enter Batch Name");
+				String fbatchName = scanner.next();
+				List<Batches> batchesList2 = batchService.findOnBasisOfBatchName(fbatchName);
+				batchesList2.forEach(batch -> System.out.println(batch));
+				break;
 
 			default:
 				System.out.println("Enter Valid number...!");
