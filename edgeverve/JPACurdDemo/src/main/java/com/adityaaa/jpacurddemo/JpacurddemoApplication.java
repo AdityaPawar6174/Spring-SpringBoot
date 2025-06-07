@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
 @SpringBootApplication
@@ -49,24 +50,37 @@ public class JpacurddemoApplication implements CommandLineRunner {
 				break;
 
 			case 2:
+				System.out.println("Enter the number of Batches to be Added: ");
 				int noofbatches = scanner.nextInt();
-				List<Batches> batchesList = new ArrayList<Batches>();
-				for(int i =0; i<noofbatches; i++){
-				System.out.println("Enter Batch Name");
-				String batchName1 = scanner.next();
-				System.out.println("Enter Batch Start Date");
-				String startDate1 = scanner.next();
-				System.out.println("Enter Batch End Date");
-				String endDate1 = scanner.next();
-
-				Batches batch2 = new Batches();
-				batch2.setBatchName(batchName1);
-				batch2.setBatchStartDate(startDate1);
-				batch2.setBatchEndDate(endDate1);
-				batchesList.add(batch2);
-			}
+				List<Batches>  batchesList = new ArrayList<Batches>();
+				for (int i =0;i<noofbatches;i++)
+				{
+					System.out.println("Enter Batch Name");
+					String batchName1 = scanner.next();
+					System.out.println("Enter Batch Start Date");
+					String startDate1 = scanner.next();
+					System.out.println("Enter Batch End Date");
+					String endDate1 = scanner.next();
+					Batches batch2 = new Batches();
+					batch2.setBatchName(batchName1);
+					batch2.setBatchStartDate(startDate1);
+					batch2.setBatchEndDate(endDate1);
+					batchesList.add(batch2);
+				}
 			batchService.addMultipleBatches(batchesList);
-            break;
+			break;
+
+			case 3:
+				System.out.println("Enter batchId to see batch details");
+				int batchId= scanner.nextInt();
+				try {
+					Optional<Batches> optional = batchService.findBatchById(batchId);
+					Batches batch = optional.get();
+					System.out.println(batch.toString());
+				} catch (Exception e) {
+					System.err.println("Id not found");
+				}
+			break;
 
 			default:
 				System.out.println("Enter Valid number...!");
