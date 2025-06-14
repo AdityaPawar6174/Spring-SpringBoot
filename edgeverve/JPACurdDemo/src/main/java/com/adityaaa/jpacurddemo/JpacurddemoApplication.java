@@ -1,7 +1,9 @@
 package com.adityaaa.jpacurddemo;
 
 import com.adityaaa.jpacurddemo.beans.Batches;
+import com.adityaaa.jpacurddemo.beans.Student;
 import com.adityaaa.jpacurddemo.services.BatchServices;
+import com.adityaaa.jpacurddemo.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -18,6 +20,10 @@ public class JpacurddemoApplication implements CommandLineRunner {
 
 	@Autowired
 	BatchServices batchService;
+
+	@Autowired
+	StudentService studentService;
+
 	@Value("${spring.application.name}")
 	private String appName;
 
@@ -36,6 +42,9 @@ public class JpacurddemoApplication implements CommandLineRunner {
 		System.out.println("Enter 5 to fetch all the records from the database");
 		System.out.println("Enter 6 to remove the batch");
 		System.out.println("Enter 7 to find all batches by Name");
+
+		System.out.println("Enter 8 to find All students");
+		System.out.println("Enter 9 to find student by emailId");
 
 		int operation = scanner.nextInt();
 		switch (operation)
@@ -112,6 +121,25 @@ public class JpacurddemoApplication implements CommandLineRunner {
 				String fbatchName = scanner.next();
 				List<Batches> batchesList2 = batchService.findOnBasisOfBatchName(fbatchName);
 				batchesList2.forEach(batch -> System.out.println(batch));
+				break;
+
+			case 8:
+				List<Student> studentList = studentService.showAllStudents();
+				System.out.println(studentList);
+				break;
+
+			case 9:
+				System.out.println("Enter Student Email");
+				String email = scanner.next();
+				Student s = studentService.showByEmail(email);
+
+				if (s != null)
+				{
+					System.out.println(s);
+				}
+				else {
+					System.err.println("Email not found!!!");
+				}
 				break;
 
 			default:
