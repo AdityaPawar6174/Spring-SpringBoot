@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="emp" class="com.aditya.beans.Employee" autowire="byName">
+    <!-- property tag used to set the values in the setter-->
+        <property name="empName" value="Aditya"/>
+        <property name="empId" value="1"/>
+    </bean>
+
+    <bean id="emp2" class="com.aditya.beans.Employee">
+        <property name="empName" value="Diksha"/>
+        <property name="empId" value="2"/>
+    </bean>
+
+    <bean id="dept" class="com.aditya.beans.Department">
+        <constructor-arg name="deptName" value="EdgeVerve"> </constructor-arg>
+        <constructor-arg name="deptId" value="1" type="int"> </constructor-arg> <!-- By default value is a String-->
+    </bean>
+
+    <bean id="project1" class="com.aditya.beans.Project">
+        <constructor-arg>
+            <!-- <bean id="emp"/> -->
+            <ref bean="emp" />
+        </constructor-arg>
+        <property name="projectName" value="Finacle"/>
+        <property name="department">
+            <ref bean="dept"/>
+        </property>
+    </bean>
+
+
+    <bean id="client" class="com.aditya.beans.Clients">
+        <constructor-arg>
+            <list>
+                <ref bean="emp"/>
+                <ref bean="emp2"/>
+            </list>
+        </constructor-arg>
+
+        <property name="name" value="SBI"/>
+
+        <property name="resources">
+            <map>
+                <entry key="Laptops">
+                    <value type="int">10</value>
+                </entry>
+                <entry key="Monitors">
+                    <value type="int">10</value>
+                </entry>
+            </map>
+        </property>
+    </bean>
+
+
+</beans>
