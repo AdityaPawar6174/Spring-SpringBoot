@@ -2,27 +2,69 @@ package org.adiitya.Scenario1.beans;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "branches")
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class LibraryBranch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private @Getter @Setter int id;
+    private int id;
 
     @NotBlank(message = "Branch name is mandatory")
-    private @Getter @Setter String name;
+    private String name;
 
-    private @Getter @Setter String location;
+    @NotBlank(message = "Branch location is mandatory")
+    private String location;
 
-    private @Getter @Setter List<Book> books = new ArrayList<>();
+    @ManyToMany(mappedBy = "libraryBranches", cascade = CascadeType.ALL)
+    private List<Book> books;
 
+    // constructors
+    public LibraryBranch(){}
+
+    public LibraryBranch(String name, String location) {
+        this.name = name;
+        this.location = location;
+    }
+
+    // Getters and setters
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "LibraryBranch{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", location='" + location + '\'' +
+                '}';
+    }
 }

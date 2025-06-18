@@ -1,26 +1,57 @@
 package org.adiitya.Scenario1.beans;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "authors")
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private @Getter @Setter int id;
+    private int id;
 
-    @NotBlank(message = "Author name must be provided")
-    private @Getter @Setter String name;
+    private String name;
 
-    @ManyToMany(mappedBy = "authors")
-    private @Getter @Setter List<Book> books = new ArrayList<>();
+    @ManyToMany(mappedBy = "authors", cascade = CascadeType.ALL)
+    private List<Book> bookList;
+
+    // constructors
+    public Author() {
+    }
+
+    public Author(String name) {
+        this.name = name;
+    }
+
+    // getters and setters
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Book> getBookList() {
+        return bookList;
+    }
+    public void setBookList(List<Book> bookList) {
+        this.bookList = bookList;
+    }
+
+    // toString method
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

@@ -28,4 +28,5 @@ public class DepartmentService implements DepartmentServiceInterface{
     public Department findDepartmentOnBasisOfId(int deptId) {
         return departmentRepo.findById(deptId).orElse(null);
     }
+
 }
