@@ -11,10 +11,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.infosys</groupId>
-	<artifactId>LibraryMapping1</artifactId>
+	<groupId>com.aditya</groupId>
+	<artifactId>Scenario1</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>LibraryMapping1</name>
+	<name>Scenario1</name>
 	<description>Library Mapping System using Spring Boot</description>
 
 	<properties>
