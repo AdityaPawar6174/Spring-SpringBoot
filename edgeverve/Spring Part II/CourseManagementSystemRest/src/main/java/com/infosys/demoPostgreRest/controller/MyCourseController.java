@@ -20,9 +20,9 @@ public class MyCourseController {
         this.courseService = courseService;
     }
 
-    @GetMapping()
-    public String myHome(){
-        return "Welcome to my Home";
+    @GetMapping("/home")
+    public String Home(){
+        return "Welcome to Home";
     }
 
     @GetMapping("/welcome")
