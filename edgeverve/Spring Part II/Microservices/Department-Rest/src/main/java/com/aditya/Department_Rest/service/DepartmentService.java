@@ -11,10 +11,6 @@ public class DepartmentService implements DepartmentServiceInterface{
     @Autowired
     public DepartmentRepo departmentRepo;
 
-//    public DepartmentService(DepartmentRepo departmentRepo) {
-//        this.departmentRepo = departmentRepo;
-//    }
-
     @Override
     public Departments saveDepartment(Departments departments) {
         return departmentRepo.save(departments);
