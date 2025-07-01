@@ -17,11 +17,18 @@ public class UserService implements UserServiceInterface{
     private UserRepo userRepo;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private RestTemplate restTemplate; // This is used to call the Department service
 
     @Override
     public User saveUser(User user) {
         return userRepo.save(user);
+    }
+
+    @Override
+    public User getUserDetail(Long id) {
+        User user = userRepo.findById(id).get();
+        System.out.println(user);
+        return user;
     }
 
     @Override
@@ -36,5 +43,15 @@ public class UserService implements UserServiceInterface{
         responseDto.setUserDto(userDto);
         responseDto.setDepartmentDto(departmentDto);
         return responseDto;
+    }
+
+    private UserDto mapToUser( User user)
+    {
+        UserDto userdto = new UserDto();
+        userdto.setId(user.getId());
+        userdto.setFirstName (user.getFirstName());
+        userdto.setLastName (user.getLastName());
+        userdto.setEmail(user.getEmail());
+        return userdto;
     }
 }
