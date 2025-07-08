@@ -17,6 +17,6 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
     private String empName;
-    private String empDept;
+    private Long deptId;
     private Double empSalary;
 }
