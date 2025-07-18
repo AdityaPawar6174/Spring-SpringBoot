@@ -4,6 +4,7 @@ import com.aditya.MegamartProjectAssignment.exception.GlobalExceptionHandler;
 import com.aditya.MegamartProjectAssignment.model.Account;
 import com.aditya.MegamartProjectAssignment.repository.AccountRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,54 +14,71 @@ public class AccountService {
     AccountRepo accountRepo;
 
     @Autowired
-    GlobalExceptionHandler exceptionHandler;
+    PasswordEncoder passwordEncoder;
 
-    public String register(Account account){
+    public String register(Account registerRequest){
 
-        if (account.getName().isEmpty()) return "Provide Name";
-        if (account.getEmail().isEmpty()) return "Provide Email";
-        if (account.getPassword().isEmpty()) return "Provide Password";
-
-        if(!account.getName().matches("^[a-zA-Z\\s]+$")) {
-            return "Name can only contain letters and spaces";
+        // Validate input
+        if (accountRepo.findByName(registerRequest.getName()).isPresent()) {
+            throw new IllegalArgumentException("Username already exists");
         }
 
-        if (!account.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
-            return "Invalid Email Format";
-        }
-
-        if(accountRepo.existsByEmail(account.getEmail())){
+        if (accountRepo.existsByEmail(registerRequest.getEmail())) {
             throw new IllegalArgumentException("Email already exists");
         }
 
-        if(!account.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{6,}$")) {
+
+        if (registerRequest.getName().isEmpty()) return "Provide Name";
+        if (registerRequest.getEmail().isEmpty()) return "Provide Email";
+        if (registerRequest.getPassword().isEmpty()) return "Provide Password";
+
+        if(!registerRequest.getName().matches("^[a-zA-Z\\s]+$")) {
+            return "Name can only contain letters and spaces";
+        }
+
+        if (!registerRequest.getEmail().matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
+            return "Invalid Email Format";
+        }
+
+
+        if(!registerRequest.getPassword().matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d@$!%*?&]{6,}$")) {
             return "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, and one number.";
         }
 
-        if(!account.getPassword().equals(account.getConfirmPassword())) {
+        if(!registerRequest.getPassword().equals(registerRequest.getConfirmPassword())) {
             return "Password does not Match";
         }
 
-        accountRepo.save(account);
-        return "Account Registered Successfully...";
+        // Hash password before saving
+        registerRequest.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+
+        accountRepo.save(registerRequest);
+        return "Registration Successful...!";
     }
 
 
-    public String login(Account account){
+    public String login(Account loginRequest){
 
-        if (account.getName().isEmpty()) return "Provide Name";
-        if (account.getPassword().isEmpty()) return "Provide Password";
-
-        // invalid username or password
-        if (!accountRepo.existsById(account.getName())){
-            return "Invalid Username or Password";
+        if (loginRequest.getName() == null || loginRequest.getName().trim().isEmpty()) {
+            throw new IllegalArgumentException("Username cannot be empty");
         }
 
-        Account existingAccount = accountRepo.findById(account.getName()).orElse(null);
-        if (existingAccount == null || !existingAccount.getPassword().equals(account.getPassword())) {
-            return "Invalid Username or Password";
+        if (loginRequest.getPassword() == null || loginRequest.getPassword().trim().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be empty");
         }
 
-        return "Account Login Successful...";
+        if (loginRequest.getName().isEmpty()) return "Provide Name";
+        if (loginRequest.getPassword().isEmpty()) return "Provide Password";
+
+        // Find by name (not ID)
+        Account account = accountRepo.findByName(loginRequest.getName())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));
+
+        // Verify password
+        if (!passwordEncoder.matches(loginRequest.getPassword(), account.getPassword())) {
+            throw new IllegalArgumentException("Invalid credentials");
+        }
+
+        return "Login Successful...!";
     }
 }

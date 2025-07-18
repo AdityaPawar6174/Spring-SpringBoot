@@ -1,49 +1,38 @@
 package com.aditya.MegamartProjectAssignment.controller;
 
 import com.aditya.MegamartProjectAssignment.model.Account;
-import com.aditya.MegamartProjectAssignment.repository.AccountRepo;
 import com.aditya.MegamartProjectAssignment.service.AccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/account")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AccountController {
 
     @Autowired
-    AccountService accountService;
-
-    @Autowired
-    AccountRepo accountRepo;
+    private AccountService accountService;
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody Account account){
-        String result = accountService.register(account);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<?> register(@Valid @RequestBody Account account) {
+        try {
+            String result = accountService.register(account);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Account loginRequest){
-
-        Optional<Account> optionalAccount = accountRepo.findById(loginRequest.getName());
-
-        if (optionalAccount.isEmpty()){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username or Password");
+    public ResponseEntity<?> login(@Valid @RequestBody Account loginRequest) {
+        try {
+            String result = accountService.login(loginRequest);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
-
-        Account account = optionalAccount.get();
-
-        if (account.getPassword() == null || !account.getPassword().equals(loginRequest.getPassword())){
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Username or Password");
-        }
-
-        return ResponseEntity.ok("Account Login Successful...");
     }
 }

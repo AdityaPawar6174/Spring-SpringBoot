@@ -17,14 +17,21 @@ import lombok.ToString;
 @Table(name = "account")
 public class Account {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotBlank(message = "Username cannot be blank")
+    @Column(unique = true)
     private String name;
+
     @Email(message = "Invalid email format")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
+
     @NotBlank( message = "Password cannot be blank")
     @Size(min = 6, message = "Password must be at least 6 characters long")
     private String password;
+
     @Transient // not saved in DB, used during registration only
     private String confirmPassword;
 }
