@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class CartService {
@@ -31,11 +30,11 @@ public class CartService {
         return cartRepo.findAll();
     }
 
-    public void updateCartItem(String cartId, int quantity) {
-        cartRepo.findById(cartId).ifPresent(cart -> {
-            cart.setQuantity(quantity);
-            cartRepo.save(cart);
-        });
+    public Cart updateCartItem(String cartId, int quantity) {
+        Cart cart = cartRepo.findById(cartId).orElseThrow(() -> new RuntimeException("Cart Id not found"));
+        cart.setQuantity(quantity);
+        cartRepo.save(cart);
+        return cart;
     }
 
     public void removeFromCart(String cartId) {

@@ -37,16 +37,16 @@ public ResponseEntity<String> addToCart(@RequestBody Cart cart){
     }
 
     @PutMapping("/{cartId}")
-    public ResponseEntity<Void> updateCartItem(@PathVariable String cartId,
+    public ResponseEntity<Cart> updateCartItem(@PathVariable String cartId,
                                                @RequestParam int quantity) {
-        cartService.updateCartItem(cartId, quantity);
-        return ResponseEntity.ok().build();
+        Cart updatedCart = cartService.updateCartItem(cartId, quantity);
+        return ResponseEntity.ok(updatedCart);
     }
 
     @DeleteMapping("/{cartId}")
-    public ResponseEntity<Void> removeFromCart(@PathVariable String cartId) {
+    public ResponseEntity<String> removeFromCart(@PathVariable String cartId) {
         cartService.removeFromCart(cartId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Deleted successfully");
     }
 
 }
