@@ -17,4 +17,12 @@ public class JobPost {
     private String postDesc;
     private int reqExperience;
     private List<String> postTechStack;
+
+    public JobPost(int postId, String postProfile, String postDesc, int reqExperience, List<String> postTechStack) {
+        this.postId = postId;
+        this.postProfile = postProfile;
+        this.postDesc = postDesc;
+        this.reqExperience = reqExperience;
+        this.postTechStack = postTechStack;
+    }
 }
